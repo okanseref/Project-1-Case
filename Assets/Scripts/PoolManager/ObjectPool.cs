@@ -5,12 +5,13 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
 
-    [SerializeField] private GameObject objectPrefab;
-    private Queue<GameObject> queue;
+    [SerializeField] private GameObject _objectPrefab;
+
+    private Queue<GameObject> _queue;
 
     private void Start()
     {
-        this.queue = new Queue<GameObject>();
+        _queue = new Queue<GameObject>();
         for (int i = 0; i < 10; i++)
         {
             CreateNewObject();
@@ -19,20 +20,20 @@ public class ObjectPool : MonoBehaviour
     public void ReturnObject(GameObject objectReturned)
     {
         objectReturned.SetActive(false);
-        queue.Enqueue(objectReturned);
+        _queue.Enqueue(objectReturned);
     }
     public void CreateNewObject()
     {
-        GameObject newObject = Instantiate(objectPrefab, null);
+        GameObject newObject = Instantiate(_objectPrefab, null);
         newObject.SetActive(false);
-        queue.Enqueue(newObject);
+        _queue.Enqueue(newObject);
     }
     public GameObject GetObject()
     {
-        if (queue.Count < 3)
+        if (_queue.Count < 3)
         {
             CreateNewObject();
         }
-        return queue.Dequeue();
+        return _queue.Dequeue();
     }
 }

@@ -7,50 +7,39 @@ namespace Managers
     public class GameManager : MonoBehaviour
     {
         public int N;
-        private GridScaler gridScaler;
-        private GridSearcher gridSearcher;
-        private GridSimple gridSimple;
-        private InputHandler inputHandler;
+        private GridScaler _gridScaler;
+        private GridSearcher _gridSearcher;
+        private GridSimple _gridSimple;
+        private InputHandler _inputHandler;
         public void Construct(GridScaler gridScaler, GridSearcher gridSearcher, GridSimple gridSimple, InputHandler inputHandler)
         {
-            this.gridScaler = gridScaler;
-            this.gridSearcher = gridSearcher;
-            this.gridSimple = gridSimple;
-            this.inputHandler = inputHandler;
+            _gridScaler = gridScaler;
+            _gridSearcher = gridSearcher;
+            _gridSimple = gridSimple;
+            _inputHandler = inputHandler;
         }
         void Start()
         {
-            inputHandler.SetSelectEvent(BoxClicked);
-            gridSimple.InitializeGrid(N);
-            gridScaler.OrderGrids(gridSimple.grid, N);
+            _inputHandler.SetSelectEvent(BoxClicked);
+            _gridSimple.InitializeGrid(N);
+            _gridScaler.OrderGrids(_gridSimple.Grid, N);
         }
-        private void BoxSelected(Box box)
+        public void ResetGrid(int newN)
         {
-
+            N = newN;
+            _gridSimple.RemoveGrid();
+            _gridSimple.InitializeGrid(N);
+            _gridScaler.OrderGrids(_gridSimple.Grid, N);
         }
         private void BoxClicked()
         {
-            Box selectedBox = inputHandler.GetSelectedBox();
+            Box selectedBox = _inputHandler.GetSelectedBox();
             selectedBox.SetTick(true);
-            List<Box> boxesToTicked = gridSearcher.BreadthFirstSearch(gridSimple.grid, selectedBox);
+            List<Box> boxesToTicked = _gridSearcher.BreadthFirstSearch(_gridSimple.Grid, selectedBox);
 
             foreach (Box boxToTicked in boxesToTicked)
             {
                 boxToTicked.SetTick(false);
-            }
-        }
-        private void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Vector2 cubeRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D cubeHit = Physics2D.Raycast(cubeRay, Vector2.zero);
-
-                if (cubeHit.transform.tag.Equals("Box"))
-                {
-                    BoxSelected(cubeHit.transform.GetComponent<Box>());
-                    Debug.Log("We hit " + cubeHit.collider.name);
-                }
             }
         }
     }

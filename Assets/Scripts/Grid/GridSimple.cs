@@ -5,20 +5,31 @@ using UnityEngine;
 
 public class GridSimple : MonoBehaviour
 {
-    public Box[,] grid { get; private set; }
+    public Box[,] Grid { get; private set; }
 
-    public void InitializeGrid(int N)
+    public void InitializeGrid(int edgeLength)
     {
-        grid = new Box[N,N];
-        for (int i = 0; i < N; i++)
+        Grid = new Box[edgeLength, edgeLength];
+        for (int i = 0; i < edgeLength; i++)
         {
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < edgeLength; j++)
             {
-                Box newBox = PoolManager.instance.boxPool.GetObject().GetComponent<Box>();
+                Box newBox = PoolManager.Instance.BoxPool.GetObject().GetComponent<Box>();
                 newBox.gameObject.SetActive(true);
                 newBox.SetXY(i, j);
                 newBox.SetTick(false);
-                grid[i, j] = newBox;
+                Grid[i, j] = newBox;
+            }
+        }
+    }
+    public void RemoveGrid()
+    {
+        int edgeLength = Grid.GetLength(0);
+        for (int i = 0; i < edgeLength; i++)
+        {
+            for (int j = 0; j < edgeLength; j++)
+            {
+                PoolManager.Instance.BoxPool.ReturnObject(Grid[i, j].gameObject);
             }
         }
     }

@@ -6,14 +6,15 @@ namespace Managers
 {
     public class PoolManager : MonoBehaviour
     {
-        public static PoolManager instance;
-        public ObjectPool boxPool;
+        public static PoolManager Instance;
+
+        public ObjectPool BoxPool;
 
         private void Awake()
         {
-            if (PoolManager.instance == null)
+            if (PoolManager.Instance == null)
             {
-                instance = this;
+                Instance = this;
             }
             else
             {

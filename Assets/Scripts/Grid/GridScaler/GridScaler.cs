@@ -5,11 +5,11 @@ using UnityEngine;
 public class GridScaler : MonoBehaviour
 {
 
-    public void OrderGrids(Box[,] grid, int N)
+    public void OrderGrids(Box[,] grid, int n)
     {
         float height = Camera.main.orthographicSize * 2;
         float boxEdgeLength = height * Camera.main.aspect;
-        boxEdgeLength /= N;
+        boxEdgeLength /= n;
 
         Vector3 startPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.pixelHeight, Camera.main.nearClipPlane));
         Vector3 currentPosition = startPosition;
@@ -19,7 +19,7 @@ public class GridScaler : MonoBehaviour
             box.transform.localScale = new Vector3(boxEdgeLength, boxEdgeLength, 1);
             box.transform.position = currentPosition;
             counter++;
-            if (counter >= N)
+            if (counter >= n)
             {
                 currentPosition.y -= boxEdgeLength;
                 currentPosition.x = startPosition.x;

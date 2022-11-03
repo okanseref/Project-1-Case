@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class ClickInputHandler : MonoBehaviour, InputHandler
 {
-    private Box clickedBox;
-    private Action clickEvent;
+    private Box _clickedBox;
+    private Action _clickEvent;
     public void SetSelectEvent(Action clickEvent)
     {
-        this.clickEvent = clickEvent;
+        _clickEvent = clickEvent;
     }
     public Box GetSelectedBox()
     {
-        return clickedBox;
+        return _clickedBox;
     }
     void Update()
     {
@@ -22,11 +22,10 @@ public class ClickInputHandler : MonoBehaviour, InputHandler
             Vector2 cubeRay = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D cubeHit = Physics2D.Raycast(cubeRay, Vector2.zero);
 
-            if (cubeHit.transform.tag.Equals("Box"))
+            if (cubeHit.transform != null && cubeHit.transform.tag.Equals("Box"))
             {
-                clickedBox = cubeHit.transform.GetComponent<Box>();
-                clickEvent();
-                Debug.Log("We hit " + cubeHit.collider.name);
+                _clickedBox = cubeHit.transform.GetComponent<Box>();
+                _clickEvent();
             }
         }
     }
