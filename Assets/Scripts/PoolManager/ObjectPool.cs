@@ -22,7 +22,7 @@ public class ObjectPool : MonoBehaviour
         objectReturned.SetActive(false);
         _queue.Enqueue(objectReturned);
     }
-    public void CreateNewObject()
+    private void CreateNewObject()
     {
         GameObject newObject = Instantiate(_objectPrefab, null);
         newObject.SetActive(false);
